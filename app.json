@@ -1,0 +1,36 @@
+{
+  "name": "AI Залоговик",
+  "description": "Система автоматизированной оценки коммерческой недвижимости",
+  "repository": "https://github.com/jfsagro-glitch/AIC",
+  "logo": "https://via.placeholder.com/150",
+  "keywords": [
+    "real-estate",
+    "valuation",
+    "ai",
+    "fastapi",
+    "react",
+    "commercial-property"
+  ],
+  "env": {
+    "DEEPSEEK_API_KEY": {
+      "description": "DeepSeek API ключ",
+      "required": true
+    },
+    "DATABASE_URL": {
+      "description": "URL базы данных PostgreSQL",
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
+

@@ -173,6 +173,89 @@ AIC/
 - Валидация всех входящих данных
 - Логирование всех AI запросов
 
+## 🚀 Деплой в Production
+
+### Вариант 1: Vercel (Frontend) + Railway/Render (Backend)
+
+#### Деплой Frontend на Vercel
+
+1. Установите [Vercel CLI](https://vercel.com/cli):
+```bash
+npm i -g vercel
+```
+
+2. Войдите в Vercel:
+```bash
+vercel login
+```
+
+3. Задеплойте frontend:
+```bash
+cd frontend
+vercel
+```
+
+4. Настройте переменные окружения в Vercel Dashboard:
+   - `REACT_APP_API_URL` - URL вашего backend API
+
+#### Деплой Backend на Railway
+
+1. Перейдите на [Railway.app](https://railway.app)
+2. Создайте новый проект из GitHub репозитория
+3. Выберите backend директорию
+4. Настройте переменные окружения:
+   - `DEEPSEEK_API_KEY`
+   - `DATABASE_URL` (Railway предоставит PostgreSQL)
+   - `FRONTEND_URL` - URL вашего Vercel приложения
+
+#### Деплой Backend на Render
+
+1. Перейдите на [Render.com](https://render.com)
+2. Создайте новый Web Service из GitHub репозитория
+3. Настройки:
+   - Root Directory: `backend`
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+
+### Вариант 2: Heroku (Полный стек)
+
+#### Деплой Backend на Heroku
+
+```bash
+# Установите Heroku CLI
+heroku login
+heroku create aic-backend
+
+# Добавьте PostgreSQL
+heroku addons:create heroku-postgresql:mini
+
+# Настройте переменные окружения
+heroku config:set DEEPSEEK_API_KEY=your_key
+heroku config:set FRONTEND_URL=https://your-frontend.vercel.app
+
+# Деплой
+git subtree push --prefix backend heroku main
+```
+
+### Вариант 3: Docker Hub + VPS
+
+1. Соберите образы:
+```bash
+docker build -t your-username/aic-backend ./backend
+docker build -t your-username/aic-frontend ./frontend
+```
+
+2. Загрузите на Docker Hub:
+```bash
+docker push your-username/aic-backend
+docker push your-username/aic-frontend
+```
+
+3. На VPS:
+```bash
+docker-compose up -d
+```
+
 ## 📝 Разработка
 
 ### Локальная разработка (без Docker)
