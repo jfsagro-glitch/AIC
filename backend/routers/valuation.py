@@ -10,9 +10,8 @@ from ai_core.calculations import (
     CommercialProperty, Hotel, ShoppingCenter, OfficeCenter,
     CapitalizationResult, DCFResult
 )
-from models import ValuationResult
+from models import ValuationResult, ValuationRecord as ValuationRecordDB
 from database import get_db
-from database import ValuationRecord as ValuationRecordDB
 
 router = APIRouter()
 
