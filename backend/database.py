@@ -27,19 +27,42 @@ if not DATABASE_URL.startswith(('postgresql://', 'postgres://')):
 try:
     from urllib.parse import urlparse
     parsed = urlparse(DATABASE_URL)
+    
     if not parsed.hostname:
         raise ValueError("DATABASE_URL missing hostname")
-    if not parsed.port or parsed.port <= 0 or parsed.port > 65535:
+    
+    # Если порт не указан, добавляем порт по умолчанию для PostgreSQL (5432)
+    if not parsed.port:
+        # Реконструируем URL с портом по умолчанию
+        if DATABASE_URL.endswith('/'):
+            DATABASE_URL = DATABASE_URL.rstrip('/') + ':5432/'
+        else:
+            # Находим последний слэш перед именем базы данных
+            if '@' in DATABASE_URL and '/' in DATABASE_URL:
+                host_part = DATABASE_URL.split('@')[1].split('/')[0]
+                if ':' not in host_part:
+                    # Добавляем порт перед именем базы
+                    DATABASE_URL = DATABASE_URL.replace(f'@{host_part}/', f'@{host_part}:5432/')
+        
+        # Перепарсим после добавления порта
+        parsed = urlparse(DATABASE_URL)
+    
+    # Проверка порта
+    if parsed.port and (parsed.port <= 0 or parsed.port > 65535):
         raise ValueError(f"Invalid port in DATABASE_URL: {parsed.port}")
-    if not parsed.path or parsed.path == '/':
+    
+    # Проверка имени базы данных
+    if not parsed.path or parsed.path == '/' or parsed.path == '':
         raise ValueError("DATABASE_URL missing database name")
+        
 except Exception as e:
     raise ValueError(
         f"Invalid DATABASE_URL format: {str(e)}\n"
-        f"Current value: '{DATABASE_URL[:50]}...' (truncated)\n"
+        f"Current value: '{DATABASE_URL[:80]}...' (truncated)\n"
         "Expected format: 'postgresql://user:password@hostname:5432/database'\n"
         "⚠️ IMPORTANT: In Render, copy the ENTIRE 'Internal Database URL' from your PostgreSQL service.\n"
-        "Make sure it includes: postgresql://, user, password, hostname, port (5432), and database name."
+        "Make sure it includes: postgresql://, user, password, hostname, port (5432), and database name.\n"
+        "If port is missing, it will default to 5432."
     )
 
 engine = create_engine(DATABASE_URL)
