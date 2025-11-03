@@ -23,6 +23,25 @@ if not DATABASE_URL.startswith(('postgresql://', 'postgres://')):
         "Copy 'Internal Database URL' (not External URL)"
     )
 
+# Проверка структуры URL
+try:
+    from urllib.parse import urlparse
+    parsed = urlparse(DATABASE_URL)
+    if not parsed.hostname:
+        raise ValueError("DATABASE_URL missing hostname")
+    if not parsed.port or parsed.port <= 0 or parsed.port > 65535:
+        raise ValueError(f"Invalid port in DATABASE_URL: {parsed.port}")
+    if not parsed.path or parsed.path == '/':
+        raise ValueError("DATABASE_URL missing database name")
+except Exception as e:
+    raise ValueError(
+        f"Invalid DATABASE_URL format: {str(e)}\n"
+        f"Current value: '{DATABASE_URL[:50]}...' (truncated)\n"
+        "Expected format: 'postgresql://user:password@hostname:5432/database'\n"
+        "⚠️ IMPORTANT: In Render, copy the ENTIRE 'Internal Database URL' from your PostgreSQL service.\n"
+        "Make sure it includes: postgresql://, user, password, hostname, port (5432), and database name."
+    )
+
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
