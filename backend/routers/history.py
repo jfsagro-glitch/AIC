@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from datetime import datetime
 from database import get_db
-from database import ValuationRecord as ValuationRecordDB
+from models import ValuationRecord as ValuationRecordDB
 from pydantic import BaseModel
 
 router = APIRouter()
