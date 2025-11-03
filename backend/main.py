@@ -34,7 +34,12 @@ app.add_middleware(
 # Создание таблиц БД
 @app.on_event("startup")
 async def startup():
-    Base.metadata.create_all(bind=engine)
+    try:
+        Base.metadata.create_all(bind=engine)
+        print("✅ Database tables created successfully")
+    except Exception as e:
+        print(f"⚠️  Warning: Could not create database tables: {e}")
+        print("   This might be normal if tables already exist or database is not accessible yet")
 
 # Подключение роутеров
 app.include_router(valuation.router, prefix="/api/valuation", tags=["valuation"])
