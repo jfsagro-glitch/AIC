@@ -34,15 +34,25 @@ try:
     # Если порт не указан, добавляем порт по умолчанию для PostgreSQL (5432)
     if not parsed.port:
         # Реконструируем URL с портом по умолчанию
-        if DATABASE_URL.endswith('/'):
-            DATABASE_URL = DATABASE_URL.rstrip('/') + ':5432/'
-        else:
-            # Находим последний слэш перед именем базы данных
-            if '@' in DATABASE_URL and '/' in DATABASE_URL:
-                host_part = DATABASE_URL.split('@')[1].split('/')[0]
-                if ':' not in host_part:
-                    # Добавляем порт перед именем базы
-                    DATABASE_URL = DATABASE_URL.replace(f'@{host_part}/', f'@{host_part}:5432/')
+        if '@' in DATABASE_URL and '/' in DATABASE_URL:
+            # Находим хост (часть после @ и до /)
+            parts = DATABASE_URL.split('@', 1)
+            if len(parts) == 2:
+                auth_part = parts[0]
+                host_db_part = parts[1]
+                
+                # Разделяем хост и базу данных
+                if '/' in host_db_part:
+                    host_part, db_part = host_db_part.split('/', 1)
+                    # Если в хосте нет порта, добавляем
+                    if ':' not in host_part:
+                        DATABASE_URL = f"{auth_part}@{host_part}:5432/{db_part}"
+                    else:
+                        # Порт уже есть, но не распарсился - возможно проблема с форматом
+                        pass
+                else:
+                    # Нет слеша после хоста - добавляем порт и слэш
+                    DATABASE_URL = f"{auth_part}@{host_db_part}:5432/"
         
         # Перепарсим после добавления порта
         parsed = urlparse(DATABASE_URL)
