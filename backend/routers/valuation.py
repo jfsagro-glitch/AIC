@@ -4,8 +4,7 @@ from datetime import datetime
 import sys
 import os
 
-# Добавляем путь к ai_core
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
+# Импорт из локального ai_core (копия в backend)
 from ai_core.calculations import (
     direct_capitalization, dcf_valuation,
     CommercialProperty, Hotel, ShoppingCenter, OfficeCenter,

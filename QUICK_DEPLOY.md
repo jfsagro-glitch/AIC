@@ -28,7 +28,7 @@
    - **Name:** `aic-backend`
    - **Root Directory:** `backend`
    - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
+   - **Start Command:** `uvicorn main:app --host 0.0.0.0 --port $PORT`
 5. Environment Variables:
    ```
    DEEPSEEK_API_KEY = ваш_ключ
