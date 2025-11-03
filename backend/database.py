@@ -13,6 +13,16 @@ if not DATABASE_URL:
         "Please set it in Render dashboard: Settings → Environment Variables"
     )
 
+# Проверка формата DATABASE_URL
+if not DATABASE_URL.startswith(('postgresql://', 'postgres://')):
+    raise ValueError(
+        f"Invalid DATABASE_URL format: '{DATABASE_URL}'. "
+        "Expected format: 'postgresql://user:password@host:port/database'\n"
+        "In Render: Use the FULL Internal Database URL from your PostgreSQL service, "
+        "not just the database name. Go to your PostgreSQL service → "
+        "Copy 'Internal Database URL' (not External URL)"
+    )
+
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

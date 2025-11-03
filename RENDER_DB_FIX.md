@@ -23,7 +23,8 @@ psycopg2.OperationalError: подключение к серверу на "localh
 2. После создания:
    - Откройте вашу базу данных
    - Скопируйте **Internal Database URL** (НЕ External!)
-   - Формат: `postgresql://user:password@hostname:5432/aic`
+   - Формат должен быть: `postgresql://user:password@hostname:5432/database`
+   - ⚠️ **ВАЖНО:** Используйте полный URL, начинающийся с `postgresql://`, а НЕ просто имя базы!
 
 ### Шаг 2: Настройте переменную DATABASE_URL
 
@@ -32,6 +33,9 @@ psycopg2.OperationalError: подключение к серверу на "localh
 3. Добавьте переменную:
    - **Key:** `DATABASE_URL`
    - **Value:** Вставьте **Internal Database URL** из шага 1
+   - ⚠️ **Проверьте:** URL должен начинаться с `postgresql://` или `postgres://`
+   - ❌ **НЕ используйте:** просто имя базы (например, `dpg-xxx`)
+   - ✅ **Используйте:** полный URL (например, `postgresql://user:pass@host:5432/db`)
 4. **Save Changes**
 
 ### Шаг 3: Перезапустите сервис
