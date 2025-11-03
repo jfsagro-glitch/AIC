@@ -1,0 +1,72 @@
+# ⚡ Быстрый старт деплоя
+
+## 🚀 Деплой за 10 минут
+
+### Шаг 1: Frontend на Vercel (5 минут)
+
+1. Откройте [vercel.com](https://vercel.com/new)
+2. Нажмите "Import Git Repository"
+3. Выберите `jfsagro-glitch/AIC`
+4. Настройки:
+   - **Framework Preset:** Create React App
+   - **Root Directory:** `frontend`
+   - **Build Command:** `npm run build`
+   - **Output Directory:** `build`
+5. Environment Variables:
+   ```
+   REACT_APP_API_URL=https://your-backend.railway.app
+   ```
+6. Нажмите "Deploy"
+
+✅ Frontend будет доступен на `your-project.vercel.app`
+
+---
+
+### Шаг 2: Backend на Railway (5 минут)
+
+1. Откройте [railway.app](https://railway.app)
+2. Создайте аккаунт через GitHub
+3. Нажмите "New Project"
+4. Выберите "Deploy from GitHub repo"
+5. Выберите репозиторий `jfsagro-glitch/AIC`
+6. Нажмите "Add PostgreSQL" → Создайте новую БД
+7. Настройте переменные окружения:
+   ```
+   DEEPSEEK_API_KEY=ваш_ключ_от_deepseek
+   DATABASE_URL=${{Postgres.DATABASE_URL}}  (автоматически)
+   FRONTEND_URL=https://your-project.vercel.app
+   ```
+8. Railway автоматически найдет `railway.json` и задеплоит
+
+✅ Backend будет доступен на `your-project.railway.app`
+
+---
+
+### Шаг 3: Обновите Frontend URL
+
+1. Вернитесь в Vercel
+2. Settings → Environment Variables
+3. Обновите `REACT_APP_API_URL` на URL вашего Railway backend
+4. Перезапустите деплой
+
+✅ Готово! Приложение работает!
+
+---
+
+## 🔗 Полезные ссылки
+
+- **Vercel Dashboard:** https://vercel.com/dashboard
+- **Railway Dashboard:** https://railway.app/dashboard
+- **DeepSeek API:** https://platform.deepseek.com
+
+## 📱 Проверка работы
+
+1. Откройте ваш Vercel URL
+2. Должна загрузиться главная страница
+3. Перейдите в "Расчет" и попробуйте создать расчет
+4. Проверьте API: `https://your-backend.railway.app/docs`
+
+## ❓ Проблемы?
+
+См. [DEPLOYMENT.md](./DEPLOYMENT.md) для детальных инструкций.
+

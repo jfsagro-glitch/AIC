@@ -1,5 +1,9 @@
 # AI Залоговик
 
+![GitHub](https://img.shields.io/github/license/jfsagro-glitch/AIC)
+![GitHub last commit](https://img.shields.io/github/last-commit/jfsagro-glitch/AIC)
+![GitHub issues](https://img.shields.io/github/issues/jfsagro-glitch/AIC)
+
 Система автоматизированной оценки коммерческой недвижимости с использованием AI-ассистента.
 
 ## 🏗️ Архитектура
@@ -23,9 +27,11 @@
 
 ## 🚀 Быстрый старт
 
+> ⚡ **Хотите задеплоить быстро?** См. [QUICK_START.md](./QUICK_START.md) для деплоя за 10 минут!
+
 ### Требования
 
-- Docker и Docker Compose
+- Docker и Docker Compose (для локального запуска)
 - DeepSeek API ключ (получить на [platform.deepseek.com](https://platform.deepseek.com))
 
 ### Установка и запуск
@@ -275,6 +281,13 @@ cd frontend
 npm install
 npm start
 ```
+
+## 📚 Дополнительная документация
+
+- [QUICK_START.md](./QUICK_START.md) - Быстрый старт деплоя (10 минут)
+- [DEPLOYMENT.md](./DEPLOYMENT.md) - Полное руководство по деплою
+- [DEPLOY.md](./DEPLOY.md) - Инструкции по GitHub
+- [CONTRIBUTING.md](./CONTRIBUTING.md) - Руководство по внесению вклада
 
 ## 🐛 Решение проблем
 
