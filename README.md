@@ -181,7 +181,36 @@ AIC/
 
 ## 🚀 Деплой в Production
 
-### Вариант 1: Vercel (Frontend) + Railway/Render (Backend)
+> 🎯 **Рекомендуемый вариант:** Frontend на GitHub Pages + Backend на Render
+> 
+> См. [DEPLOY_GITHUB_PAGES.md](./DEPLOY_GITHUB_PAGES.md) для детальных инструкций!
+
+### ⭐ Вариант 1: GitHub Pages (Frontend) + Render (Backend) - РЕКОМЕНДУЕТСЯ
+
+#### Frontend на GitHub Pages (Автоматически через Actions)
+
+1. **Включите GitHub Pages:**
+   - Settings → Pages → Source: Deploy from a branch → `gh-pages`
+   
+2. **Добавьте секрет:**
+   - Settings → Secrets → Actions → `REACT_APP_API_URL` = URL вашего Render backend
+
+3. **Автоматический деплой:**
+   - При push в main автоматически задеплоится на `https://jfsagro-glitch.github.io/AIC`
+
+#### Backend на Render
+
+1. Перейдите на [render.com](https://render.com)
+2. New → Web Service → Connect GitHub
+3. Root Directory: `backend`
+4. Environment Variables:
+   - `DEEPSEEK_API_KEY`
+   - `DATABASE_URL` (из PostgreSQL сервиса)
+   - `FRONTEND_URL` = `https://jfsagro-glitch.github.io/AIC`
+
+**Детальная инструкция:** [DEPLOY_GITHUB_PAGES.md](./DEPLOY_GITHUB_PAGES.md)
+
+### Вариант 2: Vercel (Frontend) + Railway/Render (Backend)
 
 #### Деплой Frontend на Vercel
 
@@ -284,9 +313,11 @@ npm start
 
 ## 📚 Дополнительная документация
 
+- [DEPLOY_GITHUB_PAGES.md](./DEPLOY_GITHUB_PAGES.md) - ⭐ Деплой на GitHub Pages + Render
 - [QUICK_START.md](./QUICK_START.md) - Быстрый старт деплоя (10 минут)
 - [DEPLOYMENT.md](./DEPLOYMENT.md) - Полное руководство по деплою
 - [DEPLOY.md](./DEPLOY.md) - Инструкции по GitHub
+- [DEPLOY_CHECKLIST.md](./DEPLOY_CHECKLIST.md) - Чеклист деплоя
 - [CONTRIBUTING.md](./CONTRIBUTING.md) - Руководство по внесению вклада
 
 ## 🐛 Решение проблем

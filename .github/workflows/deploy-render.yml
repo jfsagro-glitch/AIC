@@ -1,0 +1,22 @@
+name: Deploy Backend to Render
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+      - 'ai_core/**'
+      - '.github/workflows/deploy-render.yml'
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Deploy
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ secrets.RENDER_DEPLOY_HOOK }}
+          method: 'POST'
+        if: ${{ secrets.RENDER_DEPLOY_HOOK != '' }}
+

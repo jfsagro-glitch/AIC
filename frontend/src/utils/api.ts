@@ -6,6 +6,11 @@ const getApiUrl = () => {
   if (process.env.REACT_APP_API_URL) {
     return process.env.REACT_APP_API_URL;
   }
+  // Если деплой на GitHub Pages, используем Render backend
+  if (window.location.hostname === 'jfsagro-glitch.github.io' || 
+      window.location.hostname.includes('github.io')) {
+    return 'https://aic-backend.onrender.com';
+  }
   // Для разработки используем localhost
   return 'http://localhost:8000';
 };

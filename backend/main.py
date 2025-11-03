@@ -16,9 +16,16 @@ app = FastAPI(
 )
 
 # CORS настройки
+frontend_urls = [
+    "http://localhost:3000",
+    os.getenv("FRONTEND_URL", "http://localhost:3000"),
+    "https://jfsagro-glitch.github.io",  # GitHub Pages
+    "https://jfsagro-glitch.github.io/AIC",  # GitHub Pages с путем
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", os.getenv("FRONTEND_URL", "http://localhost:3000")],
+    allow_origins=frontend_urls,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
