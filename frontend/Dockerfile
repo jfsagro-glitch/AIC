@@ -2,8 +2,12 @@ FROM node:18-alpine
 
 WORKDIR /app
 
+# Установка системных зависимостей для сборки нативных модулей
+RUN apk add --no-cache python3 make g++
+
+# Установка зависимостей с обработкой ошибок
 COPY package*.json ./
-RUN npm install
+RUN npm ci --legacy-peer-deps || npm install --legacy-peer-deps
 
 COPY . .
 
