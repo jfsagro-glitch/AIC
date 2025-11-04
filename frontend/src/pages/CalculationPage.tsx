@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 import api from '../utils/api';
 import AIAssistant from '../components/AIAssistant';
+import ParameterSelector from '../components/ParameterSelector';
 
 interface CalculationResult {
   success: boolean;
@@ -40,6 +41,7 @@ const CalculationPage: React.FC = () => {
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [tabValue, setTabValue] = useState(0);
+  const [showParameterSelector, setShowParameterSelector] = useState(false);
 
   const handlePropertyDataChange = useCallback((field: string, value: any) => {
     setPropertyData((prev) => ({
@@ -59,6 +61,21 @@ const CalculationPage: React.FC = () => {
     setError(null);
 
     try {
+      // Проверяем параметры перед расчетом для метода ДДП
+      if (method === 'dcf') {
+        const checkResponse = await api.post('/api/parameters/check', {
+          property_type: propertyType,
+          method,
+          property_data: propertyData,
+        });
+        
+        if (checkResponse.data.missing_parameters.length > 0) {
+          setShowParameterSelector(true);
+          setCalculating(false);
+          return;
+        }
+      }
+
       const response = await api.post<CalculationResult>(
         `/api/valuation/calculate?method=${method}`,
         propertyData
@@ -69,7 +86,18 @@ const CalculationPage: React.FC = () => {
     } finally {
       setCalculating(false);
     }
-  }, [method, propertyData]);
+  }, [method, propertyData, propertyType]);
+
+  const handleParametersSelected = useCallback((selectedParams: any) => {
+    setPropertyData((prev) => ({
+      ...prev,
+      ...selectedParams,
+    }));
+    // Автоматически запускаем расчет после выбора параметров
+    setTimeout(() => {
+      handleCalculate();
+    }, 100);
+  }, [handleCalculate]);
 
   const renderPropertyForm = () => {
     if (propertyType === 'hotel') {
@@ -310,6 +338,16 @@ const CalculationPage: React.FC = () => {
           <Alert severity="error" sx={{ mt: 2 }}>
             {error}
           </Alert>
+        )}
+
+        {showParameterSelector && (
+          <ParameterSelector
+            propertyType={propertyType}
+            method={method}
+            propertyData={propertyData}
+            onParametersSelected={handleParametersSelected}
+            onClose={() => setShowParameterSelector(false)}
+          />
         )}
 
         {result && (

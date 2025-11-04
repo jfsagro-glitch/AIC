@@ -79,7 +79,8 @@ async def calculate_valuation(
             )
         elif method == "dcf":
             discount_rate = property_data.get("discount_rate", 0.12)
-            dcf_result = dcf_valuation(property, years=5, discount_rate=discount_rate)
+            # Передаем полные property_data для детального расчета
+            dcf_result = dcf_valuation(property, years=5, discount_rate=discount_rate, property_data=property_data)
             result = ValuationResult(
                 property_type=property_type,
                 property_value=dcf_result.total_value,

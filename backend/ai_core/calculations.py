@@ -142,10 +142,43 @@ def direct_capitalization(property: CommercialProperty) -> CapitalizationResult:
         method="direct_capitalization"
     )
 
-def dcf_valuation(property: CommercialProperty, years: int = 5, discount_rate: float = 0.12) -> DCFResult:
+def dcf_valuation(property: CommercialProperty, years: int = 5, discount_rate: float = 0.12, property_data: dict = None) -> DCFResult:
     """
     Расчет методом ДДП с прогнозом на 5 лет
+    Использует детальный калькулятор если доступен property_data
     """
+    # Если есть полные данные, используем детальный калькулятор
+    if property_data:
+        try:
+            from ai_core.dcf_calculator import DCFCalculator
+            calculator = DCFCalculator(property_data, forecast_years=years)
+            result = calculator.calculate_dcf(property.property_type)
+            
+            # Преобразуем в формат DCFResult
+            yearly_cash_flows = []
+            for cf in result['yearly_cash_flows']:
+                yearly_cash_flows.append({
+                    "year": cf['year'],
+                    "revenue_details": cf['revenue'],
+                    "expense_details": cf['expenses'],
+                    "net_operating_income": cf['noi'],
+                    "discount_factor": cf['discount_factor_mid'],
+                    "present_value": cf['present_value']
+                })
+            
+            return DCFResult(
+                yearly_cash_flows=yearly_cash_flows,
+                terminal_value=result['pv_terminal'],
+                present_value=result['pv_cash_flows'],
+                total_value=result['market_value'],
+                method="dcf",
+                discount_rate=result['discount_rate']
+            )
+        except Exception as e:
+            # Если детальный расчет не удался, используем упрощенный
+            print(f"Warning: Detailed DCF calculation failed: {e}, using simplified method")
+    
+    # Упрощенный расчет (старый метод для обратной совместимости)
     yearly_cash_flows = []
     present_value_total = 0.0
     
@@ -168,8 +201,8 @@ def dcf_valuation(property: CommercialProperty, years: int = 5, discount_rate: f
         replacement_reserve = base_replacement_reserve * growth_factor
         noi = gross_income - operating_expenses - replacement_reserve
         
-        # Дисконтирование
-        discount_factor = 1 / ((1 + discount_rate) ** year)
+        # Дисконтирование (mid-year convention)
+        discount_factor = 1 / ((1 + discount_rate) ** (year - 0.5))
         present_value = noi * discount_factor
         present_value_total += present_value
         
@@ -183,7 +216,7 @@ def dcf_valuation(property: CommercialProperty, years: int = 5, discount_rate: f
             "present_value": round(present_value, 2)
         })
     
-    # Расчет терминальной стоимости (NOI последнего года / cap_rate)
+    # Расчет терминальной стоимости
     cap_rate = get_cap_rate(property)
     terminal_noi = yearly_cash_flows[-1]["net_operating_income"]
     terminal_value_nominal = terminal_noi / cap_rate if cap_rate > 0 else 0

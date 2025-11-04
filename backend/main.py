@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 import os
 from dotenv import load_dotenv
 
-from routers import valuation, ai, files, history, market
+from routers import valuation, ai, files, history, market, parameters
 from database import engine, Base
 
 load_dotenv()
@@ -47,6 +47,7 @@ app.include_router(ai.router, prefix="/api/ai", tags=["ai"])
 app.include_router(files.router, prefix="/api/files", tags=["files"])
 app.include_router(history.router, prefix="/api/history", tags=["history"])
 app.include_router(market.router, prefix="/api/market", tags=["market"])
+app.include_router(parameters.router, prefix="/api/parameters", tags=["parameters"])
 
 @app.get("/")
 async def root():
