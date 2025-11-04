@@ -431,26 +431,40 @@ const CalculationPage: React.FC = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {result.result.dcf_result.yearly_cash_flows.map((flow: any) => (
-                        <TableRow key={flow.year}>
-                          <TableCell>{flow.year}</TableCell>
-                          <TableCell align="right">
-                            {flow.gross_income.toLocaleString('ru-RU')}
-                          </TableCell>
-                          <TableCell align="right">
-                            {flow.operating_expenses.toLocaleString('ru-RU')}
-                          </TableCell>
-                          <TableCell align="right">
-                            {flow.net_operating_income.toLocaleString('ru-RU')}
-                          </TableCell>
-                          <TableCell align="right">
-                            {flow.discount_factor.toFixed(4)}
-                          </TableCell>
-                          <TableCell align="right">
-                            {flow.present_value.toLocaleString('ru-RU')}
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                      {result.result.dcf_result.yearly_cash_flows.map((flow: any) => {
+                        // Поддержка детальных данных из нового калькулятора
+                        const revenue = flow.revenue_details?.total_revenue || 
+                                       flow.revenue_details?.dvd || 
+                                       flow.revenue_details?.total_income ||
+                                       flow.gross_income || 0;
+                        const expenses = flow.expense_details?.total_operating_expenses || 
+                                        flow.expense_details?.total_expenses ||
+                                        flow.operating_expenses || 0;
+                        const noi = flow.net_operating_income || 0;
+                        const discountFactor = flow.discount_factor || 0;
+                        const presentValue = flow.present_value || 0;
+                        
+                        return (
+                          <TableRow key={flow.year}>
+                            <TableCell>{flow.year}</TableCell>
+                            <TableCell align="right">
+                              {revenue.toLocaleString('ru-RU', { maximumFractionDigits: 0 })}
+                            </TableCell>
+                            <TableCell align="right">
+                              {expenses.toLocaleString('ru-RU', { maximumFractionDigits: 0 })}
+                            </TableCell>
+                            <TableCell align="right">
+                              {noi.toLocaleString('ru-RU', { maximumFractionDigits: 0 })}
+                            </TableCell>
+                            <TableCell align="right">
+                              {discountFactor.toFixed(4)}
+                            </TableCell>
+                            <TableCell align="right">
+                              {presentValue.toLocaleString('ru-RU', { maximumFractionDigits: 0 })}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
                       <TableRow>
                         <TableCell colSpan={5} align="right"><strong>Терминальная стоимость</strong></TableCell>
                         <TableCell align="right">
