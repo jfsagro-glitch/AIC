@@ -1,9 +1,5 @@
 # AI Залоговик
 
-![GitHub](https://img.shields.io/github/license/jfsagro-glitch/AIC)
-![GitHub last commit](https://img.shields.io/github/last-commit/jfsagro-glitch/AIC)
-![GitHub issues](https://img.shields.io/github/issues/jfsagro-glitch/AIC)
-
 Система автоматизированной оценки коммерческой недвижимости с использованием AI-ассистента.
 
 ## 🏗️ Архитектура
