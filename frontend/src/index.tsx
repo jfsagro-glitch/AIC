@@ -16,8 +16,8 @@ const theme = createTheme({
   },
 });
 
-// Определяем basename для GitHub Pages
-const getBasename = () => {
+// Определяем basename для GitHub Pages (вычисляем один раз при загрузке)
+const BASENAME = (() => {
   // Если деплой на GitHub Pages, используем /AIC
   if (window.location.hostname === 'jfsagro-glitch.github.io' || 
       window.location.hostname.includes('github.io')) {
@@ -25,7 +25,7 @@ const getBasename = () => {
   }
   // Для разработки и других деплоев basename не нужен
   return '';
-};
+})();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -35,7 +35,7 @@ root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <BrowserRouter basename={getBasename()}>
+      <BrowserRouter basename={BASENAME}>
         <App />
       </BrowserRouter>
     </ThemeProvider>

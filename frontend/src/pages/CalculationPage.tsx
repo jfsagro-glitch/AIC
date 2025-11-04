@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Box,
   Typography,
@@ -41,20 +41,20 @@ const CalculationPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [tabValue, setTabValue] = useState(0);
 
-  const handlePropertyDataChange = (field: string, value: any) => {
-    setPropertyData({
-      ...propertyData,
+  const handlePropertyDataChange = useCallback((field: string, value: any) => {
+    setPropertyData((prev) => ({
+      ...prev,
       [field]: value,
       property_type: propertyType,
       assessment_date: new Date().toISOString(),
       // Устанавливаем значения по умолчанию
-      occupancy_rate: propertyData.occupancy_rate || (propertyType === 'hotel' ? 0.55 : propertyType === 'shopping_center' ? 0.98 : 0.90),
-      replacement_reserve_rate: propertyData.replacement_reserve_rate || 0.05,
-      cap_rate: propertyData.cap_rate || 0.1,
-    });
-  };
+      occupancy_rate: prev.occupancy_rate || (propertyType === 'hotel' ? 0.55 : propertyType === 'shopping_center' ? 0.98 : 0.90),
+      replacement_reserve_rate: prev.replacement_reserve_rate || 0.05,
+      cap_rate: prev.cap_rate || 0.1,
+    }));
+  }, [propertyType]);
 
-  const handleCalculate = async () => {
+  const handleCalculate = useCallback(async () => {
     setCalculating(true);
     setError(null);
 
@@ -69,7 +69,7 @@ const CalculationPage: React.FC = () => {
     } finally {
       setCalculating(false);
     }
-  };
+  }, [method, propertyData]);
 
   const renderPropertyForm = () => {
     if (propertyType === 'hotel') {

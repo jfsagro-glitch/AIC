@@ -2,12 +2,14 @@
 <html lang="ru">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AI Залоговик</title>
     <script>
       // GitHub Pages SPA routing fix
       // Single Page Apps for GitHub Pages
       // https://github.com/rafgraph/spa-github-pages
-      var pathSegmentsToKeep = 1;
+      // Keep 2 path segments for /AIC/... paths
+      var pathSegmentsToKeep = 2;
       var l = window.location;
       l.replace(
         l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
@@ -21,4 +23,5 @@
   <body>
   </body>
 </html>
+
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Box,
   Paper,
@@ -36,7 +36,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
   const [conversation, setConversation] = useState<AIMessage[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const handleSend = async () => {
+  const handleSend = useCallback(async () => {
     if (!message.trim()) return;
 
     const userMessage: AIMessage = {
@@ -83,7 +83,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [message, propertyData, result, onDataUpdate]);
 
   return (
     <Paper sx={{ p: 2, mt: 2 }}>

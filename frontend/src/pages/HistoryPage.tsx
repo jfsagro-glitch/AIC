@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Typography,
@@ -35,11 +35,7 @@ const HistoryPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [filterType, setFilterType] = useState<string>('');
 
-  useEffect(() => {
-    loadHistory();
-  }, [filterType]);
-
-  const loadHistory = async () => {
+  const loadHistory = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -51,9 +47,13 @@ const HistoryPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filterType]);
 
-  const handleDelete = async (id: number) => {
+  useEffect(() => {
+    loadHistory();
+  }, [loadHistory]);
+
+  const handleDelete = useCallback(async (id: number) => {
     if (!window.confirm('Вы уверены, что хотите удалить эту запись?')) {
       return;
     }
@@ -64,7 +64,7 @@ const HistoryPage: React.FC = () => {
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Ошибка при удалении');
     }
-  };
+  }, [loadHistory]);
 
   const handleView = (record: HistoryRecord) => {
     const details = {
