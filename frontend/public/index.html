@@ -9,6 +9,21 @@
       content="AI Залоговик - автоматизированная оценка коммерческой недвижимости"
     />
     <title>AI Залоговик</title>
+    <script type="text/javascript">
+      // GitHub Pages SPA routing fix
+      // Single Page Apps for GitHub Pages
+      // https://github.com/rafgraph/spa-github-pages
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
   </head>
   <body>
     <noscript>Вам нужно включить JavaScript для работы приложения.</noscript>

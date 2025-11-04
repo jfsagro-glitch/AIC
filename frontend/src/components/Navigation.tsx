@@ -12,8 +12,9 @@ const Navigation: React.FC = () => {
   const location = useLocation();
 
   const getTabValue = () => {
-    const path = location.pathname;
-    if (path === '/') return 0;
+    // Убираем basename из пути для сравнения
+    const path = location.pathname.replace(/^\/AIC/, '') || '/';
+    if (path === '/' || path === '') return 0;
     if (path === '/upload') return 1;
     if (path === '/calculate') return 2;
     if (path === '/history') return 3;
