@@ -11,12 +11,24 @@
 
 ### 1. Активировать GitHub Pages (Frontend)
 
+**Вариант A: GitHub Actions (Рекомендуется)**
+
 1. Перейдите на GitHub: https://github.com/jfsagro-glitch/AIC
 2. **Settings** → **Pages** (в левом меню)
 3. **Source:** выберите **GitHub Actions**
+   - Если опции нет, сначала нужно запустить workflow один раз
+   - Или используйте Вариант B ниже
 4. Нажмите **Save**
 
-> **Важно:** Если опции "GitHub Actions" нет, выберите **Deploy from a branch** → **gh-pages** → **/ (root)**
+**Вариант B: Branch (Если Actions не работает)**
+
+1. **Settings** → **Pages**
+2. **Source:** **Deploy from a branch**
+3. **Branch:** выберите `gh-pages` (создастся автоматически после первого деплоя)
+4. **Folder:** `/ (root)`
+5. **Save**
+
+> ⚠️ **НЕ используйте SSH ключи!** GitHub Pages работает автоматически через Actions или ветку.
 
 ### 2. Добавить секрет для API URL
 
