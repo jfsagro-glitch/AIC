@@ -1,8 +1,7 @@
 name: Deploy to Production
 
 on:
-  push:
-    branches: [ main ]
+  # Только ручной запуск
   workflow_dispatch:
 
 env:

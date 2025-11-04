@@ -1,10 +1,11 @@
 name: Docker Build
 
 on:
+  # Только при создании тега или ручной запуск
   push:
-    branches: [ main, master ]
     tags:
       - 'v*'
+  workflow_dispatch:
 
 jobs:
   build:

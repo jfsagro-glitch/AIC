@@ -1,12 +1,7 @@
 name: Deploy Backend to Render
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'backend/**'
-      - 'ai_core/**'
-      - '.github/workflows/deploy-render.yml'
+  # Только ручной запуск (Render сам отслеживает GitHub)
   workflow_dispatch:
 
 jobs:
