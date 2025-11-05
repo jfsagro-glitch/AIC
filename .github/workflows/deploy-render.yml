@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Render Deploy
+        if: secrets.RENDER_DEPLOY_HOOK
         uses: fjogeleit/http-request-action@v1
-        if: secrets.RENDER_DEPLOY_HOOK != ''
         with:
           url: ${{ secrets.RENDER_DEPLOY_HOOK }}
           method: 'POST'
