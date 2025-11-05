@@ -10,8 +10,8 @@ jobs:
     steps:
       - name: Trigger Render Deploy
         uses: fjogeleit/http-request-action@v1
+        if: secrets.RENDER_DEPLOY_HOOK != ''
         with:
           url: ${{ secrets.RENDER_DEPLOY_HOOK }}
           method: 'POST'
-        if: ${{ secrets.RENDER_DEPLOY_HOOK }}
 
