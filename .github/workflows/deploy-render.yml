@@ -13,5 +13,5 @@ jobs:
         with:
           url: ${{ secrets.RENDER_DEPLOY_HOOK }}
           method: 'POST'
-        if: ${{ secrets.RENDER_DEPLOY_HOOK != '' }}
+        if: ${{ secrets.RENDER_DEPLOY_HOOK }}
 
